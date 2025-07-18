@@ -1,0 +1,3 @@
+window.env = {
+  VITE_BACKEND_SERVICE_URL: "http://localhost:8090" 
+};
