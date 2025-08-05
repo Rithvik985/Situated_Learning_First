@@ -7,7 +7,7 @@ import base64
 from typing import List, Dict, Any
 import logging
 
-from backend.InferenceEngine.inference_engines import *
+from InferenceEngine.inference_engines import *
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

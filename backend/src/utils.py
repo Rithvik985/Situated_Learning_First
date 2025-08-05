@@ -5,7 +5,7 @@ from typing import Optional
 import asyncio
 import os
 from dotenv import load_dotenv
-from backend.Agents.vision_agents import *
+from Agents.vision_agents import *
 import fitz
 from io import BytesIO
 from docx import Document
@@ -15,13 +15,13 @@ from typing import Dict, Tuple
 from typing import List
 from fastapi import UploadFile
 import re
-from backend.InferenceEngine.inference_engines import *
+from InferenceEngine.inference_engines import *
 # Load environment variables from .env file
 load_dotenv()
 
 # Access the environment variables
-ollama_url = os.getenv("OLLAMA_URL")
-ollama_model = os.getenv("OLLAMA_MODEL_FOR_ANALYSIS")
+ollama_url = os.getenv("VLLM_URL_FOR_ANALYSIS")
+ollama_model = os.getenv("VLLM_MODEL_FOR_ANALYSIS")
 verba_url = os.getenv("VERBA_URL")
 
 print(ollama_url)
