@@ -1,40 +1,101 @@
-﻿# Situated-Learning-First-Draft
 
-🚀 Quick Start
-1. 📦 Prerequisites
-Make sure you have:
 
-Docker + Docker Compose installed
+## 🚀 Getting Started
 
-Node.js (v16 or later)
+### 1. Clone the Repository
 
-Python 3.9+
+```bash
+git clone <your-repo-url>
+cd <project-folder>
+```
 
-A local LLM server running at http://localhost:9091 (e.g., Ollama)
+### 2. Start MySQL using Docker
 
-2. 🐳 Start Backend + Database
-  docker-compose up --build
-This will:
+```bash
+docker-compose up -d
+```
 
-Build and run the FastAPI backend on port 8090
+Ensure MySQL is accessible on `localhost:3306` with credentials set in the `.env` or `src/configs` file (depending on your project).
 
-Start a PostgreSQL database
+### 3. Place PDFs
 
-🔎 Verify it's running:
-Visit http://localhost:8090 → Should return {"message":"FastAPI backend is running on port 8090!"}
+Put all assignment PDF files inside:
 
-3. 💻 Run Frontend (React)
-bash
-Copy
-Edit
+```
+backend/src/mysql-init/pdfs/
+```
+
+The PDF file paths should be preloaded or inserted into the MySQL `Assignment` table.
+
+### 4. Start the LLM (vLLM)
+
+Ensure a vLLM server is running locally and listening at:
+
+```
+http://localhost:9091/v1
+```
+
+This LLM is used for assignment generation.
+
+### 5. Start the FastAPI Backend
+
+```bash
+cd backend
+uvicorn src.main:app --reload --host 0.0.0.0 --port 8090
+```
+
+Backend will start at: [http://localhost:8090](http://localhost:8090)
+
+### 6. Start the React Frontend
+
+```bash
 cd frontend
 npm install
 npm start
-This will launch the React app on http://localhost:3000.
+```
 
-⚠️ Notes
-Ensure the LLM server (Ollama or other) is running at http://localhost:9091 and supports the model ibnzterrell/Meta-Llama-3.3-70B-Instruct-AWQ-INT4
+Frontend will start at: [http://localhost:3000](http://localhost:3000)
 
-The backend uses SQLAlchemy and expects a properly initialized DB (handled on startup)
+---
 
-The React frontend expects the backend to be available at http://localhost:8090
+## 📡 API Endpoints
+
+| Endpoint | Method | Description |
+|---------|--------|-------------|
+| `/` | GET | Health check |
+| `/llm_status` | GET | Check if LLM server is responding |
+| `/db_status` | GET | Check if MySQL is connected |
+| `/assignments/by_course/{course_id}` | GET | Fetch assignments by course |
+| `/start_assignment_session` | POST | Start a generation session |
+| `/generate_from_topic` | POST | Generate a new assignment based on topic |
+
+---
+
+## 📁 Database: MySQL
+
+Make sure the `Assignment` table contains:
+
+- `id`
+- `course_id`
+- `course_title`
+- `instructor_name`
+- `topic`
+- `pdf_link` (relative path like `src/mysql-init/pdfs/myfile.pdf`)
+
+---
+
+## 🧠 LLM Server (vLLM)
+
+Expected to run locally at `http://localhost:9091/v1`.  
+Set it up separately via [vLLM docs](https://github.com/vllm-project/vllm).  
+Recommended model: `Meta-Llama-3-70B-Instruct-AWQ` or similar.
+
+---
+
+## 🛠 Dev Tips
+
+- Run backend and frontend separately
+- Ensure LLM is active before generating assignments
+- PDF extraction failures will be logged to console
+
+---
