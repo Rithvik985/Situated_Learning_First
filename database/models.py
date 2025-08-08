@@ -7,5 +7,5 @@ class Assignment(Base):
     course_id = Column(String(255), nullable=False)
     course_title = Column(String(255), nullable=False)
     instructor_name = Column(String(255), nullable=False)
-    content = Column(Text, nullable=False)
+    pdf_link = Column(String(512), nullable=False)
     topic = Column(String(100), nullable=False)

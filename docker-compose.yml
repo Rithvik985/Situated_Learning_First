@@ -1,0 +1,17 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: assignments-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: NewPasswordHere
+      MYSQL_DATABASE: assignments_db
+      MYSQL_USER: assignments_user
+      MYSQL_PASSWORD: assignments_pass
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+volumes:
+  mysql_data: 

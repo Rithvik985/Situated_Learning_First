@@ -21,11 +21,12 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 from sqlalchemy.exc import OperationalError
+from sqlalchemy import text
 
 def is_database_connected() -> bool:
     try:
         db = SessionLocal()
-        db.execute('SELECT 1')  # simple ping query
+        db.execute(text('SELECT 1'))  # simple ping query
         return True
     except OperationalError:
         return False

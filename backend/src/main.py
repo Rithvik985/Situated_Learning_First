@@ -16,6 +16,8 @@ from database.init import init_db
 from sqlalchemy.orm import Session
 from fastapi import Depends
 from sqlalchemy.orm import Session
+from question_extractor.main import process_single_pdf_with_verification
+from pydantic import BaseModel
 
 from database.models import Assignment
 from database.deps import get_db
@@ -26,6 +28,8 @@ from InferenceEngine.inference_engines import ModelType
 from uuid import uuid4
 session_store = {}
 
+class CourseIDRequest(BaseModel):
+    course_id:str
 
 app = FastAPI(
     title="Situated Learning App",
@@ -51,6 +55,19 @@ class CancellationToken:
 
     def mark_closed(self):
         self.ws_closed = True
+
+def extract_assignment_text_from_pdf(path: str) -> str:
+    try:
+        print(f"Extracting assignment text from: {path}")
+        output = process_single_pdf_with_verification(
+            pdf_path=path,
+            model="ibnzterrell/Meta-Llama-3.3-70B-Instruct-AWQ-INT4",
+            base_url="http://localhost:9091/v1",
+        )
+        return output.strip()
+    except Exception as e:
+        print(f"[ERROR] PDF extraction failed for {path}: {e}")
+        return "[Failed to extract content]"
 
 
 @app.on_event("startup")
@@ -90,16 +107,16 @@ def get_assignments_by_course(course_id: str):
                 "id": a.id,
                 "course_title": a.course_title,
                 "instructor_name": a.instructor_name,
-                "content": a.content,
+                "pdf_link": a.pdf_link,
                 "topic": a.topic
             } for a in assignments
         ]
     finally:
         db.close()
 
-
 @app.post("/start_assignment_session")
-def start_assignment_session(course_id: str = Body(...)):
+def start_assignment_session(payload: CourseIDRequest):
+    course_id=payload.course_id
     db: Session = SessionLocal()
     try:
         assignments = db.query(Assignment).filter(Assignment.course_id == course_id).all()
@@ -107,15 +124,30 @@ def start_assignment_session(course_id: str = Body(...)):
         if not assignments:
             raise HTTPException(status_code=404, detail="No assignments found for this course.")
 
-        examples = [
-            {
+        # examples = [
+        #     {
+        #         "course_title": a.course_title,
+        #         "instructor": a.instructor_name,
+        #         "topic": a.topic,
+        #         "pdf_link": a.pdf_link
+        #     }
+        #     for a in assignments
+        # ]
+
+        examples = []
+        for a in assignments:
+            #full_pdf_path = os.path.abspath(os.path.join(os.path.dirname(__file__), a.pdf_link))
+            relative_pdf_path = os.path.normpath(a.pdf_link)  # ensures proper slashes
+            full_pdf_path = os.path.abspath(os.path.join(os.path.dirname(__file__), relative_pdf_path))
+  
+            assignment_text = extract_assignment_text_from_pdf(full_pdf_path)
+            
+            examples.append({
                 "course_title": a.course_title,
-                "instructor": a.instructor_name,
                 "topic": a.topic,
-                "content": a.content.strip()
-            }
-            for a in assignments
-        ]
+                "content": assignment_text
+            })
+
 
         session_id = str(uuid4())
         session_store[session_id] = {
@@ -125,7 +157,9 @@ def start_assignment_session(course_id: str = Body(...)):
 
         return {
             "message": f"Session started for course_id={course_id}",
-            "session_id": session_id
+            "session_id": session_id,
+            "examples": examples  # <--- now included in response
+
         }
     finally:
         db.close()
@@ -133,7 +167,9 @@ def start_assignment_session(course_id: str = Body(...)):
 @app.post("/generate_from_topic")
 async def generate_from_topic(
     session_id: str = Body(...),
-    topic: str = Body(...)
+    topic: str = Body(...),
+    user_domain: str = Body(...),  # <-- New parameter
+    extra_instructions: Optional[str] = Body(default="")
 ):
     session_data = session_store.get(session_id)
     if not session_data:
@@ -145,18 +181,16 @@ async def generate_from_topic(
     examples_text = "\n\n".join([
         f"### Example Assignment\n"
         f"Course Title: {ex['course_title']}\n"
-        f"Instructor: {ex['instructor']}\n"
         f"Topic: {ex['topic']}\n"
-        f"Content:\n{ex['content']}"
+        f"Content:{ex['content']}\n"
         for ex in examples
     ])
 
     system_prompt = (
         "You are an AI assistant that helps professors create new assignments. "
-        "You will be shown several example assignments. Each example includes course information and a topic. "
-        "Your task is to generate a new, original assignment that is similar in tone, structure, and difficulty, "
-        "but does not repeat or paraphrase any of the example content. "
-        "Use a professional tone, and avoid generic or vague tasks."
+        "You will be shown several example assignments. Each example includes course information, topic, and a link to a PDF. "
+        "Your task is to generate a new, original assignment that matches the tone, structure, and difficulty. "
+        "Avoid repeating example content. Be professional and precise."
     )
 
     user_prompt = (
@@ -164,8 +198,15 @@ async def generate_from_topic(
         f"### Target Assignment\n"
         f"Course ID: {course_id}\n"
         f"Topic: {topic}\n"
-        f"Now generate a new, original assignment for this course and topic. "
-        f"Include 2–4 questions. Use bullet points or numbering. Be concise and clear."
+        f"User Domain: {user_domain}\n"
+    )
+
+    if extra_instructions:
+        user_prompt += f"Additional Instructions: {extra_instructions}\n"
+
+    user_prompt += (
+        "Now generate a new, original assignment for this course and topic. "
+        "Include 2–4 questions. Use bullet points or numbering. Be concise and clear."
     )
 
     print("Calling LLM for assignment generation...")
@@ -176,6 +217,8 @@ async def generate_from_topic(
     )
 
     return {"generated_assignment": llm_response.get("answer", "")}
+
+
 
 from database.connector import is_database_connected
 
