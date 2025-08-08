@@ -5,8 +5,7 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repo-url>
-cd <project-folder>
+git clone https://github.com/Rithvik985/Situated_Learning.git
 ```
 
 ### 2. Start MySQL using Docker
@@ -101,4 +100,5 @@ Recommended model: `Meta-Llama-3-70B-Instruct-AWQ` or similar.
 - PDF extraction failures will be logged to console
 
 ---
+
 
