@@ -17,6 +17,8 @@ docker-compose up -d
 
 Ensure MySQL is accessible on `localhost:3306` with credentials set in the `.env` or `src/configs` file (depending on your project).
 
+Add all the required Course Metadata along with the path of the pdfs in the sql file in the init-sql folder. (Has two entries by default)
+
 ### 3. Place PDFs
 
 Put all assignment PDF files inside:
@@ -99,3 +101,4 @@ Recommended model: `Meta-Llama-3-70B-Instruct-AWQ` or similar.
 - PDF extraction failures will be logged to console
 
 ---
+
