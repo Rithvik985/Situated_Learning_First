@@ -16,7 +16,7 @@ from database.init import init_db
 from sqlalchemy.orm import Session
 from fastapi import Depends
 from sqlalchemy.orm import Session
-from question_extractor.main import process_single_pdf_with_verification
+from question_extraction.main import process_single_pdf_with_verification
 from pydantic import BaseModel
 
 from database.models import Assignment
