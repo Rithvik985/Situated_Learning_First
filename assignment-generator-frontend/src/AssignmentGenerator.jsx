@@ -7,8 +7,10 @@ export default function AssignmentGenerator() {
   const [extraInstructions, setExtraInstructions] = useState("");
   const [sessionId, setSessionId] = useState(null);
   const [generatedAssignment, setGeneratedAssignment] = useState(null);
+  const [answerKey, setAnswerKey] = useState(null);
   const [examples, setExamples] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [withKey, setWithKey] = useState(false); // NEW: checkbox state
 
   const handleStartSession = async () => {
     setLoading(true);
@@ -36,7 +38,8 @@ export default function AssignmentGenerator() {
 
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8090/generate_from_topic", {
+      const url = `http://localhost:8090/generate_from_topic?with_key=${withKey}`;
+      const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -48,6 +51,11 @@ export default function AssignmentGenerator() {
       });
       const data = await response.json();
       setGeneratedAssignment(data.generated_assignment);
+      if (withKey) {
+        setAnswerKey(data.answer_key || "No answer key generated.");
+      } else {
+        setAnswerKey(null);
+      }
     } catch (error) {
       console.error("Failed to generate assignment:", error);
     } finally {
@@ -73,54 +81,62 @@ export default function AssignmentGenerator() {
           onClick={handleStartSession}
           disabled={loading}
         >
-          Start Session
+          Enter
         </button>
 
         {sessionId && (
           <div className="space-y-4 mt-6">
 
-  <div className="space-y-6">
-  <div className="grid grid-cols-3 gap-4 items-center">
-    <label className="font-medium text-right">Topic</label>
-    <input
-      className="col-span-2 p-2 border rounded w-full"
-      type="text"
-      placeholder="Topic"
-      value={topic}
-      onChange={(e) => setTopic(e.target.value)}
-    />
-  </div>
+            <div className="space-y-6">
+              <div className="grid grid-cols-3 gap-4 items-center">
+                <label className="font-medium text-right">Topic</label>
+                <input
+                  className="col-span-2 p-2 border rounded w-full"
+                  type="text"
+                  placeholder="Topic"
+                  value={topic}
+                  onChange={(e) => setTopic(e.target.value)}
+                />
+              </div>
 
-  <div className="grid grid-cols-3 gap-4 items-center">
-    <label className="font-medium text-right">Domain</label>
-    <input
-      className="col-span-2 p-2 border rounded w-full"
-      type="text"
-      placeholder="Your Domain (e.g., Healthcare, Finance)"
-      value={userDomain}
-      onChange={(e) => setUserDomain(e.target.value)}
-    />
-  </div>
+              <div className="grid grid-cols-3 gap-4 items-center">
+                <label className="font-medium text-right">Domain</label>
+                <input
+                  className="col-span-2 p-2 border rounded w-full"
+                  type="text"
+                  placeholder="Your Domain (e.g., Healthcare, Finance)"
+                  value={userDomain}
+                  onChange={(e) => setUserDomain(e.target.value)}
+                />
+              </div>
 
-  <div className="grid grid-cols-3 gap-4 items-start">
-    <label className="font-medium text-right mt-2">Extra Instructions</label>
-    <textarea
-      className="col-span-2 p-2 border rounded w-full"
-      placeholder="Extra Instructions (optional)"
-      rows="4"
-      value={extraInstructions}
-      onChange={(e) => setExtraInstructions(e.target.value)}
-    />
-  </div>
-</div>
+              <div className="grid grid-cols-3 gap-4 items-start">
+                <label className="font-medium text-right mt-2">Extra Instructions</label>
+                <textarea
+                  className="col-span-2 p-2 border rounded w-full"
+                  placeholder="Extra Instructions (optional)"
+                  rows="4"
+                  value={extraInstructions}
+                  onChange={(e) => setExtraInstructions(e.target.value)}
+                />
+              </div>
 
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={withKey}
+                  onChange={(e) => setWithKey(e.target.checked)}
+                />
+                <label className="font-medium">Generate Answer Key</label>
+              </div>
+            </div>
 
             <button
               className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
               onClick={handleGenerateAssignment}
               disabled={loading}
             >
-              Generate Assignment
+              {withKey ? "Generate Assignment + Answer Key" : "Generate Assignment"}
             </button>
           </div>
         )}
@@ -131,6 +147,13 @@ export default function AssignmentGenerator() {
           <div className="mt-6 p-4 border rounded bg-gray-100">
             <h2 className="text-xl font-semibold mb-2">Generated Assignment</h2>
             <pre className="whitespace-pre-wrap text-sm">{generatedAssignment}</pre>
+          </div>
+        )}
+
+        {answerKey && (
+          <div className="mt-6 p-4 border rounded bg-yellow-100">
+            <h2 className="text-xl font-semibold mb-2">Answer Key</h2>
+            <pre className="whitespace-pre-wrap text-sm">{answerKey}</pre>
           </div>
         )}
       </div>

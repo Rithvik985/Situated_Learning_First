@@ -23,12 +23,12 @@ Add all the required Course Metadata along with the path of the pdfs in the sql 
 Put all assignment PDF files inside:
 
 ```
-backend/src/mysql-init/pdfs/
+backend/src/pdfs/
 ```
 
 The PDF file paths should be preloaded or inserted into the MySQL `Assignment` table.
 
-### 4. Start the LLM (vLLM)
+### 4. Start the LLMs (vLLM)
 
 Ensure a vLLM server is running locally and listening at:
 
@@ -38,7 +38,9 @@ http://localhost:9091/v1
 
 This LLM is used for assignment generation.
 
-### 5. Start the FastAPI Backend
+### 5. Start the FastAPI Backend (First Open env)
+
+Enter Backend and open environment newestenv and download all from requirements.txt
 
 ```bash
 cd backend

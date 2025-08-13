@@ -1,7 +1,7 @@
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from fastapi import FastAPI, HTTPException, Request, Body
+from fastapi import FastAPI, HTTPException, Request, Body, Query
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import asyncio
@@ -16,8 +16,13 @@ from database.init import init_db
 from sqlalchemy.orm import Session
 from fastapi import Depends
 from sqlalchemy.orm import Session
-from question_extraction.main import process_single_pdf_with_verification
+from Question_Extractor.extractor import process_single_pdf_with_verification
 from pydantic import BaseModel
+from dotenv import load_dotenv
+
+llm_url = os.getenv("VLLM_URL_FOR_ANALYSIS")
+llm_model = os.getenv("VLLM_MODEL_FOR_ANALYSIS")
+verba_url = os.getenv("VERBA_URL")
 
 from database.models import Assignment
 from database.deps import get_db
@@ -61,8 +66,8 @@ def extract_assignment_text_from_pdf(path: str) -> str:
         print(f"Extracting assignment text from: {path}")
         output = process_single_pdf_with_verification(
             pdf_path=path,
-            model="ibnzterrell/Meta-Llama-3.3-70B-Instruct-AWQ-INT4",
-            base_url="http://localhost:9091/v1",
+            model=llm_model,
+            base_url=llm_url,
         )
         return output.strip()
     except Exception as e:
@@ -168,8 +173,9 @@ def start_assignment_session(payload: CourseIDRequest):
 async def generate_from_topic(
     session_id: str = Body(...),
     topic: str = Body(...),
-    user_domain: str = Body(...),  # <-- New parameter
-    extra_instructions: Optional[str] = Body(default="")
+    user_domain: str = Body(...),
+    extra_instructions: Optional[str] = Body(default=""),
+    with_key: bool = Query(default=False, description="Generate answer key along with assignment")
 ):
     session_data = session_store.get(session_id)
     if not session_data:
@@ -188,7 +194,7 @@ async def generate_from_topic(
 
     system_prompt = (
         "You are an AI assistant that helps professors create new assignments. "
-        "You will be shown several example assignments. Each example includes course information, topic, and a link to a PDF. "
+        "You will be shown several example assignments. Each example includes course information, topic, and content. "
         "Your task is to generate a new, original assignment that matches the tone, structure, and difficulty. "
         "Avoid repeating example content. Be professional and precise."
     )
@@ -216,9 +222,69 @@ async def generate_from_topic(
         model_type=ModelType.ANALYSIS
     )
 
-    return {"generated_assignment": llm_response.get("answer", "")}
+    assignment_text = llm_response.get("answer", "")
+
+    if not with_key:
+        return {"generated_assignment": assignment_text}
+
+    # If with_key=True → also generate answer key using the other endpoint logic
+    answer_system_prompt = (
+        "You are an AI assistant that generates detailed answer keys for assignments. "
+        "The provided text is the assignment. "
+        "For each question in the assignment, provide a clear and precise answer. "
+        "Match the question numbering exactly. "
+        "If the question has multiple parts, label each part in the answer."
+    )
+
+    answer_user_prompt = (
+        f"### Assignment\n"
+        f"{assignment_text}\n\n"
+        f"### Task\n"
+        f"Generate a complete and accurate answer key for the above assignment."
+    )
+
+    print("Calling LLM for answer key generation...")
+    key_response = await invoke_llm(
+        system_prompt=answer_system_prompt,
+        user_prompt=answer_user_prompt,
+        model_type=ModelType.ANALYSIS
+    )
+
+    return {
+        "generated_assignment": assignment_text,
+        "answer_key": key_response.get("answer", "")
+    }
 
 
+@app.post("/generate_answer_key")
+async def generate_answer_key(
+    assignment_text: str = Body(..., description="The assignment text to create answers for")
+):
+    system_prompt = (
+        "You are an AI assistant that generates detailed answer keys for assignments. "
+        "The provided text is the assignment. "
+        "For each question in the assignment, provide a clear and precise answer. "
+        "Match the question numbering exactly. "
+        "If the question has multiple parts, label each part in the answer."
+    )
+
+    user_prompt = (
+        f"### Assignment\n"
+        f"{assignment_text}\n\n"
+        f"### Task\n"
+        f"Generate a complete and accurate answer key for the above assignment."
+    )
+
+    print("Calling LLM for answer key generation...")
+    llm_response = await invoke_llm(
+        system_prompt=system_prompt,
+        user_prompt=user_prompt,
+        model_type=ModelType.ANALYSIS
+    )
+
+    return {
+        "answer_key": llm_response.get("answer", "")
+    }
 
 from database.connector import is_database_connected
 
