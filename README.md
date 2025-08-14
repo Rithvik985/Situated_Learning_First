@@ -38,6 +38,8 @@ http://localhost:9091/v1
 
 This LLM is used for assignment generation.
 
+Also ensure to put your image model as well as the url for the image model in the .env file in the VLLM_MODEL_FOR_IMAGE and VLLM_URL_FOR_IMAGE
+
 ### 5. Start the FastAPI Backend (First Open env)
 
 Enter Backend and open environment newestenv and download all from requirements.txt
@@ -102,5 +104,6 @@ Recommended model: `Meta-Llama-3-70B-Instruct-AWQ` or similar.
 - PDF extraction failures will be logged to console
 
 ---
+
 
 
