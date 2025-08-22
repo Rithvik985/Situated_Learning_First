@@ -1,0 +1,50 @@
+PDF VERIFICATION REPORT
+Date: 2025-08-21 13:02:22
+Directory: output/extracted_questions_Advanced VLSI_1_20250821_130222
+======================================================================
+
+File: question_01_multipage.pdf
+Status: dirt
+Question Count: 0
+Reason: N/A
+Text Length: 0 chars
+Action: Mark as dirt
+--------------------------------------------------
+File: question_02_multipage.pdf
+Status: valid
+Question Count: 2
+Reason: The content contains two distinct main questions: designing and simulating a SR Latch and a D latch using transmission gates.
+Text Length: 114 chars
+Action: Splitting into 2 separate files
+Split Result: Failed, keeping original
+--------------------------------------------------
+File: question_03_multipage.pdf
+Status: valid
+Question Count: 2
+Reason: The content contains two distinct main questions: designing and simulating a D latch using transmission gates, and designing and simulating a Master-Slave FF. There are no sets or sub-questions, just two separate questions.
+Text Length: 193 chars
+Action: Splitting into 2 separate files
+Split Result: Failed, keeping original
+--------------------------------------------------
+File: question_04_multipage.pdf
+Status: valid
+Question Count: 1
+Reason: The content contains a single actual question about designing a CMOS Schmitt trigger circuit, with no indication of multiple sets or sub-questions.
+Text Length: 98 chars
+Action: Keep as is
+--------------------------------------------------
+File: question_05_multipage.pdf
+Status: valid
+Question Count: 1
+Reason: The content contains a single main question about designing a CMOS Level Shifter, with no indication of multiple sets or sub-questions.
+Text Length: 93 chars
+Action: Keep as is
+--------------------------------------------------
+
+SUMMARY:
+Total files processed: 5
+Valid single questions: 4
+Files split: 0
+New files created by splitting: 0
+Dirt files: 1
+Error files: 0

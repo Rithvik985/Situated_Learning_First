@@ -1,0 +1,42 @@
+PDF VERIFICATION REPORT
+Date: 2025-08-21 13:04:21
+Directory: output/extracted_questions_Mechatronics_20250821_130421
+======================================================================
+
+File: question_01_multipage.pdf
+Status: valid
+Question Count: 7
+Reason: The content contains a single main question with 7 distinct sub-questions (a to g) that are related to the sensor datasheet, and there are no sets or variations of the same question. Each sub-question is considered part of the main question, but since they are distinct and separate, they are counted individually.
+Text Length: 661 chars
+Action: Splitting into 7 separate files
+Split Result: Failed, keeping original
+--------------------------------------------------
+File: question_02_multipage.pdf
+Status: valid
+Question Count: 1
+Reason: The content contains a single main question ("For the circuit shown, answer the following questions") with sub-questions (a, b, c, d, e) that are part of it, and there are no sets (e.g. "SET A", "SET B") indicating multiple variants of the same question.
+Text Length: 541 chars
+Action: Keep as is
+--------------------------------------------------
+File: question_03_multipage.pdf
+Status: valid
+Question Count: 1
+Reason: The content contains a single main question (Consider the following circuit) with sub-questions (a and b), but no separate sets are identified, so it is counted as one distinct main question.
+Text Length: 212 chars
+Action: Keep as is
+--------------------------------------------------
+File: question_04_multipage.pdf
+Status: dirt
+Question Count: 0
+Reason: N/A
+Text Length: 0 chars
+Action: Mark as dirt
+--------------------------------------------------
+
+SUMMARY:
+Total files processed: 4
+Valid single questions: 3
+Files split: 0
+New files created by splitting: 0
+Dirt files: 1
+Error files: 0

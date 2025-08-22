@@ -10,5 +10,11 @@ CREATE TABLE assignments (
 );
 
 INSERT INTO assignments (course_id, course_title, instructor_name, pdf_link, topic) VALUES
-('PEF301', 'Power Electronics Lab', 'Dr. G. Rao', '.\\pdfs\\Assignment 1 - Mechatronics.pdf', 'Boost and Buck Converter Design'),
-('CSD345', 'Mobile Application Development', 'Dr. D. Ramesh', '.\\pdfs\\Lab_Assignment-1 - Embedded System Design.pdf', 'SQLite in Flutter');
+('PEF301', 'Mechatronics', 'Dr. G. Rao', '.\\pdfs\\Assignment 1 - Mechatronics.pdf', 'Circuits'),
+('CSD345', 'Embedded System Design', 'Dr. D. Ramesh', '.\\pdfs\\Lab_Assignment-1 - Embedded System Design.pdf', 'Embedder');
+
+CREATE TABLE assignment_content (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    assignment_text TEXT NULL,
+    rubric TEXT NULL
+);

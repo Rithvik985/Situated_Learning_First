@@ -381,7 +381,7 @@ def process_all_pdfs_in_test_files(model="ibnzterrell/Meta-Llama-3.3-70B-Instruc
 
 
 def process_single_pdf_with_verification(pdf_path, model="ibnzterrell/Meta-Llama-3.3-70B-Instruct-AWQ-INT4", 
-                                         base_url="http://localhost:8012/v1"):
+                                         base_url="http://localhost:9091/v1"):
     """
     Process a single PDF path: extract questions, verify segments, and return all clean question text
     """

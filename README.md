@@ -5,7 +5,7 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Rithvik985/Situated_Learning.git
+git clone https://github.com/Rithvik985/Situated_Learning_Final.git
 ```
 
 ### 2. Start MySQL using Docker

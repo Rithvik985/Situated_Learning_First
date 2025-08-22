@@ -1,0 +1,5 @@
+# Virtual environments inside backend
+backend/my_project_venv/
+backend/name/
+# Ignore all virtual environments in backend
+backend/*venv/

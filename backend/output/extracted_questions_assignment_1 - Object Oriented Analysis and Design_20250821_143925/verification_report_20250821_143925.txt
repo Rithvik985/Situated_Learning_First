@@ -1,0 +1,55 @@
+PDF VERIFICATION REPORT
+Date: 2025-08-21 14:39:25
+Directory: output/extracted_questions_assignment_1 - Object Oriented Analysis and Design_20250821_143925
+======================================================================
+
+File: question_01_multipage.pdf
+Status: valid
+Question Count: 1
+Reason: The content contains a single design-related question, although it is incomplete and lacks specific details, it implies a main question is present.
+Text Length: 73 chars
+Action: Keep as is
+--------------------------------------------------
+File: question_02_multipage.pdf
+Status: dirt
+Question Count: 0
+Reason: N/A
+Text Length: 0 chars
+Action: Mark as dirt
+--------------------------------------------------
+File: question_03_multipage.pdf
+Status: dirt
+Question Count: 0
+Reason: N/A
+Text Length: 0 chars
+Action: Mark as dirt
+--------------------------------------------------
+File: question_04_multipage.pdf
+Status: dirt
+Question Count: 0
+Reason: N/A
+Text Length: 0 chars
+Action: Mark as dirt
+--------------------------------------------------
+File: question_05_multipage.pdf
+Status: dirt
+Question Count: 0
+Reason: N/A
+Text Length: 0 chars
+Action: Mark as dirt
+--------------------------------------------------
+File: question_06_multipage.pdf
+Status: dirt
+Question Count: 0
+Reason: N/A
+Text Length: 0 chars
+Action: Mark as dirt
+--------------------------------------------------
+
+SUMMARY:
+Total files processed: 6
+Valid single questions: 1
+Files split: 0
+New files created by splitting: 0
+Dirt files: 5
+Error files: 0

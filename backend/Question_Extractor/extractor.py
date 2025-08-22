@@ -7,7 +7,7 @@ from Question_Extractor.convert_doc_to_pdf import convert_all_docx_in_test_files
 def main():
     """Main entry point for the question extraction pipeline"""
     output = process_single_pdf_with_verification(model="ibnzterrell/Meta-Llama-3.3-70B-Instruct-AWQ-INT4", 
-                                     base_url="http://localhost:9017/v1")
+                                     base_url="http://localhost:9091/v1")
     
     print("$"*50)
     print("the extracted string")

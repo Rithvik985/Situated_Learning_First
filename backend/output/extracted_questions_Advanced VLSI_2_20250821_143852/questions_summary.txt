@@ -1,0 +1,45 @@
+MULTI-PAGE QUESTION EXTRACTION SUMMARY
+Date: 2025-08-21 14:38:52
+Source PDF: Advanced VLSI_2.pdf
+==================================================
+
+Question 1:
+  PDF File: question_01_multipage.pdf
+  Starter: 1. Design Schematic and simulate
+  Pattern Used: exact_flexible
+  Total Pages: 1
+  Page Segments:
+    Segment 1: Page 1, Y 244.95-262.50
+
+Question 2:
+  PDF File: question_02_multipage.pdf
+  Starter: 2. Design Schematic and simulate
+  Pattern Used: exact_flexible
+  Total Pages: 1
+  Page Segments:
+    Segment 1: Page 1, Y 259.50-276.90
+
+Question 3:
+  PDF File: question_03_multipage.pdf
+  Starter: 3. Design Schematic and simulate
+  Pattern Used: exact_flexible
+  Total Pages: 1
+  Page Segments:
+    Segment 1: Page 1, Y 273.90-339.30
+
+Question 4:
+  PDF File: question_04_multipage.pdf
+  Starter: 4. Design a CMOS Schmitt trigger
+  Pattern Used: exact_flexible
+  Total Pages: 1
+  Page Segments:
+    Segment 1: Page 1, Y 336.30-368.34
+
+Question 5:
+  PDF File: question_05_multipage.pdf
+  Starter: 5. Design a CMOS Level Shifter
+  Pattern Used: exact_flexible
+  Total Pages: 1
+  Page Segments:
+    Segment 1: Page 1, Y 365.34-841.92
+

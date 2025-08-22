@@ -1,0 +1,71 @@
+MULTI-PAGE QUESTION EXTRACTION SUMMARY
+Date: 2025-08-20 12:06:14
+Source PDF: Lab_Assignment-1 - Embedded System Design.pdf
+==================================================
+
+Question 1:
+  PDF File: question_01_multipage.pdf
+  Starter: Q.1. Assembly Language Programs
+  Pattern Used: exact_flexible
+  Total Pages: 1
+  Page Segments:
+    Segment 1: Page 1, Y 413.55-454.42
+
+Question 2:
+  PDF File: question_02_multipage.pdf
+  Starter: b) How many states
+  Pattern Used: substring_fallback
+  Total Pages: 2
+  Page Segments:
+    Segment 1: Page 1, Y 451.42-841.92
+    Segment 2: Page 2, Y 0.00-654.49
+
+Question 3:
+  PDF File: question_03_multipage.pdf
+  Starter: Simulate the above given
+  Pattern Used: exact_flexible
+  Total Pages: 1
+  Page Segments:
+    Segment 1: Page 2, Y 651.49-692.12
+
+Question 4:
+  PDF File: question_04_multipage.pdf
+  Starter: a) On reset what
+  Pattern Used: exact_flexible
+  Total Pages: 1
+  Page Segments:
+    Segment 1: Page 2, Y 689.12-707.00
+
+Question 5:
+  PDF File: question_05_multipage.pdf
+  Starter: b) How many states
+  Pattern Used: exact_flexible
+  Total Pages: 1
+  Page Segments:
+    Segment 1: Page 2, Y 704.00-736.76
+
+Question 6:
+  PDF File: question_06_multipage.pdf
+  Starter: c) Are the number
+  Pattern Used: exact_flexible
+  Total Pages: 2
+  Page Segments:
+    Segment 1: Page 2, Y 733.76-841.92
+    Segment 2: Page 3, Y 0.00-70.30
+
+Question 7:
+  PDF File: question_07_multipage.pdf
+  Starter: d) Measure the performance
+  Pattern Used: exact_flexible
+  Total Pages: 1
+  Page Segments:
+    Segment 1: Page 3, Y 67.30-157.80
+
+Question 8:
+  PDF File: question_08_multipage.pdf
+  Starter: Q.2. Write an ALP program
+  Pattern Used: exact_flexible
+  Total Pages: 1
+  Page Segments:
+    Segment 1: Page 3, Y 154.80-841.92
+

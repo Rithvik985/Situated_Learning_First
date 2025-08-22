@@ -1,0 +1,35 @@
+PDF VERIFICATION REPORT
+Date: 2025-08-19 12:26:59
+Directory: output/extracted_questions_Assignment 1 - Mechatronics_20250819_122659
+======================================================================
+
+File: question_01_multipage.pdf
+Status: valid
+Question Count: 1
+Reason: The content contains a single main question that asks to complete a timing diagram and a truth table based on a given circuit, with a specific starting state for the flip-flop output Q.
+Text Length: 215 chars
+Action: Keep as is
+--------------------------------------------------
+File: question_02_multipage.pdf
+Status: valid
+Question Count: 1
+Reason: The content contains a single main question that asks to fill a truth table for a given circuit diagram.
+Text Length: 69 chars
+Action: Keep as is
+--------------------------------------------------
+File: question_03_multipage.pdf
+Status: valid
+Question Count: 5
+Reason: The content contains a single main question with 5 distinct sub-questions (i, ii, iii, iv, v) that are related to the same topic, and there are no sets or variations of the same question. Each sub-question is considered a separate question variant.
+Text Length: 646 chars
+Action: Splitting into 5 separate files
+Split Result: Failed, keeping original
+--------------------------------------------------
+
+SUMMARY:
+Total files processed: 3
+Valid single questions: 3
+Files split: 0
+New files created by splitting: 0
+Dirt files: 0
+Error files: 0

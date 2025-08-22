@@ -1,0 +1,21 @@
+MULTI-PAGE QUESTION EXTRACTION SUMMARY
+Date: 2025-08-21 13:04:00
+Source PDF: Embedded System Design_2.pdf
+==================================================
+
+Question 1:
+  PDF File: question_01_multipage.pdf
+  Starter: Q.1. Write a C program
+  Pattern Used: exact_flexible
+  Total Pages: 1
+  Page Segments:
+    Segment 1: Page 1, Y 468.99-577.01
+
+Question 2:
+  PDF File: question_02_multipage.pdf
+  Starter: Q.2. Answer the following questions
+  Pattern Used: exact_flexible
+  Total Pages: 1
+  Page Segments:
+    Segment 1: Page 1, Y 574.01-841.92
+

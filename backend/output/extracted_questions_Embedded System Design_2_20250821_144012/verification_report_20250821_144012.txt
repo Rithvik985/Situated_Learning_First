@@ -1,0 +1,27 @@
+PDF VERIFICATION REPORT
+Date: 2025-08-21 14:40:12
+Directory: output/extracted_questions_Embedded System Design_2_20250821_144012
+======================================================================
+
+File: question_01_multipage.pdf
+Status: valid
+Question Count: 1
+Reason: The content contains a single main question (Q.1) that asks for a C program to display specific information on an LCD display, along with additional requirements for screenshots and debugging. There are no sub-questions or sets indicated.
+Text Length: 568 chars
+Action: Keep as is
+--------------------------------------------------
+File: question_02_multipage.pdf
+Status: valid
+Question Count: 1
+Reason: The content contains a single main question (Q.2) with sub-questions (a, b, c) related to LPC2378, and there are no sets or variations of the main question.
+Text Length: 629 chars
+Action: Keep as is
+--------------------------------------------------
+
+SUMMARY:
+Total files processed: 2
+Valid single questions: 2
+Files split: 0
+New files created by splitting: 0
+Dirt files: 0
+Error files: 0

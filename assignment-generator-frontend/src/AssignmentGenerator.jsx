@@ -7,10 +7,10 @@ export default function AssignmentGenerator() {
   const [extraInstructions, setExtraInstructions] = useState("");
   const [sessionId, setSessionId] = useState(null);
   const [generatedAssignment, setGeneratedAssignment] = useState(null);
-  const [answerKey, setAnswerKey] = useState(null);
+  const [assignmentId, setAssignmentId] = useState(null); // NEW: assignment id
   const [examples, setExamples] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [withKey, setWithKey] = useState(false); // NEW: checkbox state
+  const [rubric, setRubric] = useState(null); // NEW: rubric state
 
   const handleStartSession = async () => {
     setLoading(true);
@@ -38,7 +38,7 @@ export default function AssignmentGenerator() {
 
     setLoading(true);
     try {
-      const url = `http://localhost:8090/generate_from_topic?with_key=${withKey}`;
+      const url = `http://localhost:8090/generate_from_topic`;
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -51,13 +51,31 @@ export default function AssignmentGenerator() {
       });
       const data = await response.json();
       setGeneratedAssignment(data.generated_assignment);
-      if (withKey) {
-        setAnswerKey(data.answer_key || "No answer key generated.");
-      } else {
-        setAnswerKey(null);
-      }
+      setAssignmentId(data.assignment_id || null); // store assignment id
     } catch (error) {
       console.error("Failed to generate assignment:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGenerateRubric = async () => {
+    if (!assignmentId) {
+      alert("Assignment ID not found.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const url = `http://localhost:8090/assignments/${assignmentId}/generate_rubric`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      setRubric(data.rubric || "No rubric generated.");
+    } catch (error) {
+      console.error("Failed to generate rubric:", error);
     } finally {
       setLoading(false);
     }
@@ -86,7 +104,6 @@ export default function AssignmentGenerator() {
 
         {sessionId && (
           <div className="space-y-4 mt-6">
-
             <div className="space-y-6">
               <div className="grid grid-cols-3 gap-4 items-center">
                 <label className="font-medium text-right">Topic</label>
@@ -111,7 +128,9 @@ export default function AssignmentGenerator() {
               </div>
 
               <div className="grid grid-cols-3 gap-4 items-start">
-                <label className="font-medium text-right mt-2">Extra Instructions</label>
+                <label className="font-medium text-right mt-2">
+                  Extra Instructions
+                </label>
                 <textarea
                   className="col-span-2 p-2 border rounded w-full"
                   placeholder="Extra Instructions (optional)"
@@ -120,15 +139,6 @@ export default function AssignmentGenerator() {
                   onChange={(e) => setExtraInstructions(e.target.value)}
                 />
               </div>
-
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={withKey}
-                  onChange={(e) => setWithKey(e.target.checked)}
-                />
-                <label className="font-medium">Generate Answer Key</label>
-              </div>
             </div>
 
             <button
@@ -136,7 +146,7 @@ export default function AssignmentGenerator() {
               onClick={handleGenerateAssignment}
               disabled={loading}
             >
-              {withKey ? "Generate Assignment + Answer Key" : "Generate Assignment"}
+              Generate Assignment
             </button>
           </div>
         )}
@@ -144,16 +154,27 @@ export default function AssignmentGenerator() {
         {loading && <p className="text-gray-500">Processing...</p>}
 
         {generatedAssignment && (
-          <div className="mt-6 p-4 border rounded bg-gray-100">
-            <h2 className="text-xl font-semibold mb-2">Generated Assignment</h2>
-            <pre className="whitespace-pre-wrap text-sm">{generatedAssignment}</pre>
+          <div className="mt-6 space-y-4">
+            <div className="p-4 border rounded bg-gray-100">
+              <h2 className="text-xl font-semibold mb-2">Generated Assignment</h2>
+              <pre className="whitespace-pre-wrap text-sm">{generatedAssignment}</pre>
+            </div>
+
+            {/* Rubric Button (appears after assignment is generated) */}
+            <button
+              className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+              onClick={handleGenerateRubric}
+              disabled={loading}
+            >
+              Generate Rubric
+            </button>
           </div>
         )}
 
-        {answerKey && (
+        {rubric && (
           <div className="mt-6 p-4 border rounded bg-yellow-100">
-            <h2 className="text-xl font-semibold mb-2">Answer Key</h2>
-            <pre className="whitespace-pre-wrap text-sm">{answerKey}</pre>
+            <h2 className="text-xl font-semibold mb-2">Generated Rubric</h2>
+            <pre className="whitespace-pre-wrap text-sm">{rubric}</pre>
           </div>
         )}
       </div>
