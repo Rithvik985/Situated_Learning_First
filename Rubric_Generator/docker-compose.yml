@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  rubric-generator:
+    build: .
+    container_name: rubric-generator
+    ports:
+      - "6022:6022"
+    env_file:
+      - .env
+    volumes:
+      - .:/app   # Mount code for hot-reload during dev
+    command: uvicorn src.api:app --host 0.0.0.0 --port 6022 --reload
+    restart: unless-stopped

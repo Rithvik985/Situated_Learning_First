@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: feedback_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: feedback_db
+      MYSQL_USER: feedback
+      MYSQL_PASSWORD: feedback123
+    ports:
+      - "3308:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  feedback-service:
+    build: .
+    container_name: feedback_service
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: mysql+pymysql://feedback:feedback123@db:3306/feedback_db
+    ports:
+      - "8001:8001"   # Changed to 8001
+    volumes:
+      - .:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8001
+    # ^ makes sure app runs on port 8001 inside container
+
+volumes:
+  db_data:
