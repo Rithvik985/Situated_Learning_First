@@ -4,6 +4,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 from database.base import Base
+from sqlalchemy.exc import OperationalError
+from sqlalchemy import text
 
 load_dotenv()
 
@@ -19,9 +21,6 @@ SQLALCHEMY_DATABASE_URL = (
 engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True, future=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-
-from sqlalchemy.exc import OperationalError
-from sqlalchemy import text
 
 def is_database_connected() -> bool:
     try:
