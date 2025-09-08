@@ -1,0 +1,15 @@
+# Database
+SQLAlchemy==2.0.32
+pymysql==1.1.1
+cryptography==43.0.1
+mysql-connector-python==9.0.0
+
+# MinIO client
+minio==7.2.7
+
+# Environment variables
+python-dotenv==1.0.1
+
+# FastAPI dependencies (if you’re going to expose APIs later)
+fastapi==0.115.0
+uvicorn==0.30.6

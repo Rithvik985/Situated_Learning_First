@@ -13,7 +13,7 @@ from fastapi.encoders import jsonable_encoder
 from src.configs import *
 from fastapi.responses import StreamingResponse
 from typing import AsyncGenerator
-from database.init import init_db
+from database.init import init_db,init_minio_table
 from sqlalchemy.orm import Session
 from Question_Extractor.extractor import process_single_pdf_with_verification
 from pydantic import BaseModel
@@ -85,6 +85,7 @@ def extract_assignment_text_from_pdf(path: str) -> str:
 @app.on_event("startup")
 async def startup_event():
     init_db()
+    init_minio_table()
 
 @app.get("/")
 async def root():

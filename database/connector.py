@@ -31,3 +31,4 @@ def is_database_connected() -> bool:
         return False
     finally:
         db.close()
+        
